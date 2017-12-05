@@ -5,6 +5,8 @@ package de.hizr.poe.itemindexer.model;
  */
 public class Property {
 
+	// ... member
+
 	private String name;
 
 	private int displayMode;
@@ -12,6 +14,8 @@ public class Property {
 	private int type;
 
 	private int progress;
+
+	// ... getter and setter
 
 	public String getName() {
 		return name;

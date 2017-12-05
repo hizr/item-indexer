@@ -13,6 +13,8 @@ import de.hizr.poe.itemindexer.model.Item;
 @Service
 public class ItemFilterImpl implements ItemFilter {
 
+	// ... business methods
+
 	@Override
 	public List<Item> filter(final List<Item> items) {
 		List<Item> result = items;
@@ -21,6 +23,8 @@ public class ItemFilterImpl implements ItemFilter {
 
 		return result;
 	}
+
+	// ... utility methods
 
 	private List<Item> filterEmptyNotes(final List<Item> items) {
 

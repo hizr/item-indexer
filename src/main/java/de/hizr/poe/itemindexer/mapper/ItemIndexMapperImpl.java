@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class ItemIndexMapperImpl extends DozerBeanMapper implements ItemIndexMapper {
 
+	// ... construction
+
 	public ItemIndexMapperImpl() {
 		this(Collections.emptyList());
 	}

@@ -12,9 +12,13 @@ import de.hizr.poe.itemindexer.model.Item;
 @Component
 public class ItemOfferCustomConverter extends AbstractOneWayCustomConverter<Item, Offer> {
 
+	// ... construction
+
 	public ItemOfferCustomConverter() {
 		super(Item.class, Offer.class);
 	}
+
+	// ... business methods
 
 	@Override
 	public Offer convertTo(final Item sourceNotNull) {

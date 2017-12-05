@@ -5,9 +5,13 @@ package de.hizr.poe.itemindexer.model;
  */
 public class Socket {
 
+	// ... member
+
 	private int group;
 
 	private String attr;
+
+	// ... getter and setter
 
 	public int getGroup() {
 		return group;

@@ -1,14 +1,25 @@
 package de.hizr.poe.itemindexer.elastic.model;
 
+/**
+ * @author hizr
+ */
 public enum OfferType {
+
+	// ... instances
 
 	BUYOUT("~b/o"), PRICE("~price");
 
+	// ... member
+
 	private String initcator;
+
+	// ... construction
 
 	private OfferType(final String initcator) {
 		this.initcator = initcator;
 	}
+
+	// ... business methods
 
 	public static OfferType valueBy(final String indicator) {
 		OfferType result = null;
@@ -27,6 +38,8 @@ public enum OfferType {
 
 		return result;
 	}
+
+	// ... getter
 
 	public String getInitcator() {
 		return initcator;

@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class Stash {
 
+	// ... member
+
 	private String accountName;
 
 	private String lastCharacterName;
@@ -23,6 +25,8 @@ public class Stash {
 
 	@JsonProperty("public")
 	private boolean visible;
+
+	// ... getter and setter
 
 	public String getAccountName() {
 		return accountName;

@@ -6,16 +6,21 @@ import de.hizr.poe.itemindexer.exception.NotSupportedException;
 
 /**
  * @author hizr
- *
  */
 public abstract class AbstractOneWayCustomConverter<S, D> extends DozerConverter<S, D> {
+
+	// ... construction
 
 	public AbstractOneWayCustomConverter(final Class<S> prototypeA, final Class<D> prototypeB) {
 		super(prototypeA, prototypeB);
 	}
 
+	// ... api methods
+
 	@Override
 	public abstract D convertTo(S sourceNotNull);
+
+	// ... business methods
 
 	@Override
 	public D convertTo(final S source, final D destination) {

@@ -9,7 +9,12 @@ import de.hizr.poe.itemindexer.elastic.model.ItemIndex;
 import de.hizr.poe.itemindexer.model.Item;
 import de.hizr.poe.itemindexer.model.Stash;
 
+/**
+ * @author hizr
+ */
 public class ItemIndexBeanMappingBuilder extends BeanMappingBuilder {
+
+	// ... business methods
 
 	@Override
 	protected void configure() {

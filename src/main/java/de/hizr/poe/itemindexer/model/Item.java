@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class Item {
 
+	// ... member
+
 	private boolean verified;
 
 	@JsonProperty("w")
@@ -38,6 +40,8 @@ public class Item {
 	private boolean lockedToCharacter;
 
 	private String note;
+
+	// ... getter and setter
 
 	private List<Property> properties;
 

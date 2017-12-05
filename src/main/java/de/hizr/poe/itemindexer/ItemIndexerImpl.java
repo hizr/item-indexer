@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import de.hizr.poe.itemindexer.elastic.ElasticPushService;
 import de.hizr.poe.itemindexer.elastic.model.ItemIndex;
 import de.hizr.poe.itemindexer.mapper.ItemIndexMapper;
 import de.hizr.poe.itemindexer.model.Item;
@@ -26,7 +27,11 @@ import de.hizr.poe.itemindexer.service.StashFilter;
 @Service
 public class ItemIndexerImpl implements ItemIndexer {
 
+	// ... constants
+
 	private static final Logger LOG = LoggerFactory.getLogger(ItemIndexerImpl.class);
+
+	// ... member
 
 	@Autowired
 	private PullService pullService;
@@ -40,21 +45,31 @@ public class ItemIndexerImpl implements ItemIndexer {
 	@Autowired
 	private ItemIndexMapper itemIndexMapper;
 
+	@Autowired
+	private ElasticPushService pushService;
+
+	// ... business methods
+
 	@Override
 	public void index() {
 
 		try {
 
-			run();
+			final List<ItemIndex> itemIndexes = crawlAndFilterItemIndexes();
+			logItems(itemIndexes);
+			pushService.pushItems(itemIndexes);
 
 		} catch (final InterruptedException | JsonProcessingException e) {
 
-			LOG.error("Somethink went wrong on indexing...", e);
+			LOG.error("somethink went wrong on indexing...", e);
 
 		}
 	}
 
-	private void run() throws InterruptedException, JsonProcessingException {
+	// ... utility methods
+
+	private List<ItemIndex> crawlAndFilterItemIndexes() throws InterruptedException, JsonProcessingException {
+		// TODO: looping pulls
 		String nextId = null;
 
 		final PublicStashTabs pullTabs = pullService.pullTabs(nextId);
@@ -62,13 +77,17 @@ public class ItemIndexerImpl implements ItemIndexer {
 
 		List<Stash> stashes = pullTabs.getStashes();
 
-		stashes = stashFilter.filter(stashes);
-
-		filterItems(stashes);
+		stashes = filterStashes(stashes);
 
 		final List<ItemIndex> itemIndexes = mapStashes(stashes);
 
-		printItems(itemIndexes);
+		return itemIndexes;
+	}
+
+	private List<Stash> filterStashes(List<Stash> stashes) {
+		stashes = stashFilter.filter(stashes);
+		filterItems(stashes);
+		return stashes;
 	}
 
 	private List<ItemIndex> mapStashes(final List<Stash> stashes) {
@@ -98,26 +117,12 @@ public class ItemIndexerImpl implements ItemIndexer {
 		}
 	}
 
-	private void printItems(final List<ItemIndex> items) throws JsonProcessingException {
+	private void logItems(final List<ItemIndex> items) throws JsonProcessingException {
 		final ObjectMapper mapper = new ObjectMapper();
 
 		for (final ItemIndex item : items) {
-			LOG.debug("{}", mapper.writeValueAsString(item));
+			LOG.info("{}", mapper.writeValueAsString(item));
 		}
-	}
-
-	private List<Item> collectItems(final List<Stash> stashes) {
-		final List<Item> items = new ArrayList<>();
-
-		for (final Stash stash : stashes) {
-			final List<Item> stashItems = stash.getItems();
-
-			if (!stashItems.isEmpty()) {
-				items.addAll(stashItems);
-			}
-		}
-
-		return items;
 	}
 
 }

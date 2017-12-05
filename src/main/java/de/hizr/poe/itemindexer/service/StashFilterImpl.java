@@ -15,7 +15,11 @@ import de.hizr.poe.itemindexer.model.Stash;
 @Service
 public class StashFilterImpl implements StashFilter {
 
+	// ... constants
+
 	private static final Logger LOG = LoggerFactory.getLogger(StashFilterImpl.class);
+
+	// ... business methods
 
 	@Override
 	public List<Stash> filter(final List<Stash> stashes) {
@@ -28,6 +32,8 @@ public class StashFilterImpl implements StashFilter {
 
 		return result;
 	}
+
+	// ... utility methods
 
 	private List<Stash> filterPrivateStashes(final List<Stash> stashes) {
 		final List<Stash> result = stashes //

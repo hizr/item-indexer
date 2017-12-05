@@ -7,15 +7,21 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
  */
 public class Value {
 
+	// ... member
+
 	private String key;
 
 	private int value;
+
+	// ... business methods
 
 	@JsonAnySetter
 	public void set(final String key, final Integer value) {
 		this.key = key;
 		this.value = value;
 	}
+
+	// ... getter and setter
 
 	public String getKey() {
 		return key;

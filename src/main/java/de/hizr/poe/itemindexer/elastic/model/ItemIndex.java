@@ -1,6 +1,7 @@
 package de.hizr.poe.itemindexer.elastic.model;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -11,6 +12,10 @@ import de.hizr.poe.itemindexer.model.Socket;
  * @author hizr
  */
 public class ItemIndex {
+
+	// ... member
+
+	private final UUID id;
 
 	private String accountName;
 
@@ -53,6 +58,16 @@ public class ItemIndex {
 	private Offer offer;
 
 	private List<Property> properties;
+
+	// ... getter and setter
+
+	public ItemIndex() {
+		id = UUID.randomUUID();
+	}
+
+	public UUID getId() {
+		return id;
+	}
 
 	public String getAccountName() {
 		return accountName;

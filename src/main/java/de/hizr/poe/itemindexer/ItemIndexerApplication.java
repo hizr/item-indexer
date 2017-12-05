@@ -2,7 +2,11 @@ package de.hizr.poe.itemindexer;
 
 import java.util.List;
 
+import org.apache.http.HttpHost;
 import org.dozer.CustomConverter;
+import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestClientBuilder;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -17,15 +21,21 @@ import com.github.dozermapper.spring.DozerBeanMapperFactoryBean;
 @SpringBootApplication
 public class ItemIndexerApplication {
 
+	// ... member
+
 	@Autowired
 	private ItemIndexer indexer;
 
 	@Autowired
 	private List<CustomConverter> customConverters;
 
+	// ... main method
+
 	public static void main(final String[] args) {
 		SpringApplication.run(ItemIndexerApplication.class, args);
 	}
+
+	// ... bean factory methods
 
 	@Bean
 	@Scope(value = "singleton")
@@ -35,6 +45,15 @@ public class ItemIndexerApplication {
 		dozerBeanMapperFactoryBean.setCustomConverters(customConverters);
 
 		return dozerBeanMapperFactoryBean;
+	}
+
+	@Bean
+	public RestHighLevelClient restHighLevelClient() {
+		final RestClientBuilder builder = RestClient.builder( //
+				new HttpHost("localhost", 9200, "http"), //
+				new HttpHost("localhost", 9201, "http") //
+		);
+		return new RestHighLevelClient(builder);
 	}
 
 	@Bean

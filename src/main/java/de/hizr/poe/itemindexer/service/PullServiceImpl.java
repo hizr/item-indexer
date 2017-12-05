@@ -13,13 +13,19 @@ import de.hizr.poe.itemindexer.model.PublicStashTabs;
 @Service
 public class PullServiceImpl implements PullService {
 
+	// ... constants
+
 	private static final Logger LOG = org.slf4j.LoggerFactory.getLogger(PullServiceImpl.class);
 
 	private static final String URL = "http://api.pathofexile.com/public-stash-tabs";
 	private static final String ID = "?id=";
 
+	// ... member
+
 	@Autowired
 	private RestTemplate restTemplate;
+
+	// ... business methods
 
 	@Override
 	public PublicStashTabs pullTabs(final String nextId) {

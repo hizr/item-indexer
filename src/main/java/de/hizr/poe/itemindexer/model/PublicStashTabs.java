@@ -11,10 +11,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PublicStashTabs {
 
+	// ... member
+
 	@JsonProperty("next_change_id")
 	private String nextChangeId;
 
 	private List<Stash> stashes;
+
+	// ... getter and setter
 
 	public String getNextChangeId() {
 		return nextChangeId;
@@ -30,11 +34,6 @@ public class PublicStashTabs {
 
 	public void setStashes(final List<Stash> stashes) {
 		this.stashes = stashes;
-	}
-
-	@Override
-	public String toString() {
-		return "PublicStashTabs [nextChangeId=" + nextChangeId + ", stashes=" + stashes + "]";
 	}
 
 }
