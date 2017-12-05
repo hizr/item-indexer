@@ -32,7 +32,7 @@ public class ItemIndexerApplication {
 	// ... main method
 
 	public static void main(final String[] args) {
-		SpringApplication.run(ItemIndexerApplicationTest.class, args);
+		SpringApplication.run(ItemIndexerApplication.class, args);
 	}
 
 	// ... bean factory methods
