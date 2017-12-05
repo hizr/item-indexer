@@ -22,7 +22,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<dozer.version>5.4.0</dozer.version>
+		<dozer.version>6.1.0</dozer.version>
 		<apache.commons.version>3.0</apache.commons.version>
 		<elasticsearch.client.version>6.0.0</elasticsearch.client.version>
 	</properties>
@@ -56,10 +56,17 @@
 		</dependency>
 
 		<dependency>
-			<groupId>net.sf.dozer</groupId>
-			<artifactId>dozer</artifactId>
+			<groupId>com.github.dozermapper</groupId>
+			<artifactId>dozer-core</artifactId>
 			<version>${dozer.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.github.dozermapper</groupId>
+			<artifactId>dozer-spring</artifactId>
+			<version>${dozer.version}</version>
+		</dependency>
+
 
 		<dependency>
 			<groupId>org.apache.commons</groupId>
