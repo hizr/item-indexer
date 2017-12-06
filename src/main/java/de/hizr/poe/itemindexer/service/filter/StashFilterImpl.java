@@ -1,4 +1,4 @@
-package de.hizr.poe.itemindexer.service;
+package de.hizr.poe.itemindexer.service.filter;
 
 import java.util.List;
 import java.util.stream.Collectors;

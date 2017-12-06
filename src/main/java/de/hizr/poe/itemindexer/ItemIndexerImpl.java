@@ -13,13 +13,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.hizr.poe.itemindexer.elastic.ElasticPushService;
 import de.hizr.poe.itemindexer.elastic.model.ItemIndex;
+import de.hizr.poe.itemindexer.exception.JsonException;
 import de.hizr.poe.itemindexer.mapper.ItemIndexMapper;
 import de.hizr.poe.itemindexer.model.Item;
 import de.hizr.poe.itemindexer.model.PublicStashTabs;
 import de.hizr.poe.itemindexer.model.Stash;
-import de.hizr.poe.itemindexer.service.ItemFilter;
 import de.hizr.poe.itemindexer.service.PullService;
-import de.hizr.poe.itemindexer.service.StashFilter;
+import de.hizr.poe.itemindexer.service.filter.ItemFilterService;
+import de.hizr.poe.itemindexer.service.filter.StashFilter;
 
 /**
  * @author hizr
@@ -40,7 +41,7 @@ public class ItemIndexerImpl implements ItemIndexer {
 	private StashFilter stashFilter;
 
 	@Autowired
-	private ItemFilter itemFilter;
+	private ItemFilterService itemFilter;
 
 	@Autowired
 	private ItemIndexMapper itemIndexMapper;
@@ -54,12 +55,25 @@ public class ItemIndexerImpl implements ItemIndexer {
 	public void index() {
 
 		try {
+			String nextId = null;
 
-			final List<ItemIndex> itemIndexes = crawlAndFilterItemIndexes();
-			logItems(itemIndexes);
-			pushService.pushItems(itemIndexes);
+			while (true) {
+				final PublicStashTabs pullTabs = pullService.pullTabs(nextId);
+				nextId = pullTabs.getNextChangeId();
 
-		} catch (final InterruptedException | JsonProcessingException e) {
+				List<Stash> stashes = pullTabs.getStashes();
+
+				stashes = filterStashes(stashes);
+
+				final List<ItemIndex> itemIndexes = mapStashes(stashes);
+
+				logItems(itemIndexes);
+				pushService.pushItems(itemIndexes);
+
+				Thread.sleep(1500);
+			}
+
+		} catch (final InterruptedException e) {
 
 			LOG.error("somethink went wrong on indexing...", e);
 
@@ -67,22 +81,6 @@ public class ItemIndexerImpl implements ItemIndexer {
 	}
 
 	// ... utility methods
-
-	private List<ItemIndex> crawlAndFilterItemIndexes() throws InterruptedException, JsonProcessingException {
-		// TODO: looping pulls
-		String nextId = null;
-
-		final PublicStashTabs pullTabs = pullService.pullTabs(nextId);
-		nextId = pullTabs.getNextChangeId();
-
-		List<Stash> stashes = pullTabs.getStashes();
-
-		stashes = filterStashes(stashes);
-
-		final List<ItemIndex> itemIndexes = mapStashes(stashes);
-
-		return itemIndexes;
-	}
 
 	private List<Stash> filterStashes(List<Stash> stashes) {
 		stashes = stashFilter.filter(stashes);
@@ -117,12 +115,30 @@ public class ItemIndexerImpl implements ItemIndexer {
 		}
 	}
 
-	private void logItems(final List<ItemIndex> items) throws JsonProcessingException {
-		final ObjectMapper mapper = new ObjectMapper();
+	private void logItems(final List<ItemIndex> items) {
 
 		for (final ItemIndex item : items) {
-			LOG.info("{}", mapper.writeValueAsString(item));
+			LOG.debug("{}", new ItemLogWrapper(item)); 
 		}
 	}
 
+	private static class ItemLogWrapper {
+
+		private final ItemIndex item;
+		private final ObjectMapper mapper = new ObjectMapper();
+
+		private ItemLogWrapper(final ItemIndex item) {
+			this.item = item;
+		}
+
+		@Override
+		public String toString() {
+			try {
+				return mapper.writeValueAsString(item);
+			} catch (final JsonProcessingException e) {
+				throw new JsonException("cant process json", e);
+			}
+		}
+
+	}
 }

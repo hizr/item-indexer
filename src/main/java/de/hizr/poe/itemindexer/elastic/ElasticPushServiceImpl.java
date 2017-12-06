@@ -51,6 +51,8 @@ public class ElasticPushServiceImpl implements ElasticPushService {
 		close();
 	}
 
+	// ... utility methods
+
 	private RestHighLevelClient createClient() {
 		final RestClientBuilder builder = RestClient.builder( //
 				new HttpHost("localhost", 9200, "http"), //
@@ -61,9 +63,11 @@ public class ElasticPushServiceImpl implements ElasticPushService {
 
 	private void performPush(final BulkRequest bulkRequest) {
 		try {
+
 			LOG.info("try to bulk request {}", bulkRequest);
 			client.bulk(bulkRequest);
-			LOG.info("");
+			LOG.info("finished bulk");
+
 		} catch (final IOException e) {
 			final String message = "exception while bukling data to search engine...";
 			throw new ElasticException(message, e);
@@ -82,8 +86,6 @@ public class ElasticPushServiceImpl implements ElasticPushService {
 
 		return bulkRequest;
 	}
-
-	// ... utility methods
 
 	private IndexRequest createIndexRequest(final ObjectMapper mapper, final ItemIndex itemIndex) {
 		final IndexRequest request = new IndexRequest(INDEX_NAME, TYPE, itemIndex.getId().toString());
@@ -105,8 +107,8 @@ public class ElasticPushServiceImpl implements ElasticPushService {
 		try {
 			client.close();
 		} catch (final IOException e) {
-			final String message = "cannot close {} ...";
-			throw new RuntimeException(String.format(message, RestHighLevelClient.class.getSimpleName()), e);
+			final String message = "cannot close %s ...";
+			throw new ElasticException(String.format(message, RestHighLevelClient.class.getSimpleName()), e);
 		}
 	}
 

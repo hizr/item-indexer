@@ -25,6 +25,7 @@
 		<dozer.version>6.1.0</dozer.version>
 		<apache.commons.version>3.0</apache.commons.version>
 		<elasticsearch.client.version>6.0.0</elasticsearch.client.version>
+		<testng.version>6.11</testng.version>
 	</properties>
 
 	<dependencies>
@@ -79,6 +80,12 @@
 			<version>${dozer.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>${testng.version}</version>
+			<scope>test</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>org.apache.commons</groupId>

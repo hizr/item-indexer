@@ -23,6 +23,10 @@ dist/
 nbdist/
 .nb-gradle/
 
+### TestNG ###
+
+test-output/
+
 # Compiled class file
 *.class
 
