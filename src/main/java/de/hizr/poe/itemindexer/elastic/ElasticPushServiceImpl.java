@@ -3,13 +3,15 @@ package de.hizr.poe.itemindexer.elastic;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.http.HttpHost;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.client.RestClient;
+import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -34,13 +36,14 @@ public class ElasticPushServiceImpl implements ElasticPushService {
 
 	// ... member
 
-	@Autowired
 	private RestHighLevelClient client;
 
 	// ... business methods
 
 	@Override
 	public void pushItems(final List<ItemIndex> itemIndexes) {
+		client = createClient();
+
 		final BulkRequest bulkRequest = createBulkRequest(itemIndexes);
 
 		performPush(bulkRequest);
@@ -48,10 +51,19 @@ public class ElasticPushServiceImpl implements ElasticPushService {
 		close();
 	}
 
+	private RestHighLevelClient createClient() {
+		final RestClientBuilder builder = RestClient.builder( //
+				new HttpHost("localhost", 9200, "http"), //
+				new HttpHost("localhost", 9201, "http") //
+		);
+		return new RestHighLevelClient(builder);
+	}
+
 	private void performPush(final BulkRequest bulkRequest) {
 		try {
 			LOG.info("try to bulk request {}", bulkRequest);
 			client.bulk(bulkRequest);
+			LOG.info("");
 		} catch (final IOException e) {
 			final String message = "exception while bukling data to search engine...";
 			throw new ElasticException(message, e);
