@@ -1,7 +1,6 @@
 package de.hizr.poe.itemindexer.elastic.model;
 
 import java.util.List;
-import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -15,7 +14,7 @@ public class ItemIndex {
 
 	// ... member
 
-	private final UUID id;
+	private String id;
 
 	private String accountName;
 
@@ -39,8 +38,6 @@ public class ItemIndex {
 
 	private String league;
 
-	private String itemId;
-
 	private List<Socket> sockets;
 
 	private String itemName;
@@ -55,22 +52,24 @@ public class ItemIndex {
 
 	private String note;
 
+	private String additionalNote;
+
 	private Offer offer;
 
 	private List<Property> properties;
 
 	// ... getter and setter
 
-	public ItemIndex() {
-		id = UUID.randomUUID();
+	public String getAccountName() {
+		return accountName;
 	}
 
-	public UUID getId() {
+	public String getId() {
 		return id;
 	}
 
-	public String getAccountName() {
-		return accountName;
+	public void setId(final String id) {
+		this.id = id;
 	}
 
 	public void setAccountName(final String accountName) {
@@ -149,14 +148,6 @@ public class ItemIndex {
 		this.league = league;
 	}
 
-	public String getItemId() {
-		return itemId;
-	}
-
-	public void setItemId(final String itemId) {
-		this.itemId = itemId;
-	}
-
 	public List<Socket> getSockets() {
 		return sockets;
 	}
@@ -211,6 +202,14 @@ public class ItemIndex {
 
 	public void setNote(final String note) {
 		this.note = note;
+	}
+
+	public String getAdditionalNote() {
+		return additionalNote;
+	}
+
+	public void setAdditionalNote(final String additionalNote) {
+		this.additionalNote = additionalNote;
 	}
 
 	public Offer getOffer() {

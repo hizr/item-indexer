@@ -21,6 +21,7 @@ public class ItemIndexBeanMappingBuilder extends BeanMappingBuilder {
 		mapping(Stash.class, ItemIndex.class, oneWay());
 
 		mapping(Item.class, ItemIndex.class, oneWay()) //
+				.fields("id", "id") //
 				.fields("this", "itemName", customConverter(ItemNameCustomConverterImpl.class)) //
 				.fields("this", "offer", customConverter(ItemOfferCustomConverter.class)) //
 		;
