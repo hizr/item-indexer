@@ -1,5 +1,6 @@
 package de.hizr.poe.itemindexer.service;
 
+import static de.hizr.poe.itemindexer.util.TestDataUtils.randomAlphaNumeric;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
@@ -50,13 +51,18 @@ public class UselessNoteItemFilterUnitTest {
 	private Item createValidItem(final OfferType ot) {
 		final Item item = new Item();
 
-		item.setNote(ot.getInitcator());
+		final String note = ot.getInitcator() + " " + randomAlphaNumeric(1) + " " + randomAlphaNumeric(12);
+		item.setNote(note);
 
 		return item;
 	}
 
 	private Item createInvalidRandomizedItem() {
-		return new Item();
+		final Item item = new Item();
+
+		item.setNote(randomAlphaNumeric(3) + " " + randomAlphaNumeric(5));
+
+		return item;
 	}
 
 }

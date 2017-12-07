@@ -34,7 +34,7 @@ public class UselessNoteItemFilter implements ItemFilter {
 		boolean result = false;
 
 		for (final OfferType ot : OfferType.values()) {
-			result = StringUtils.containsAny(item.getNote(), ot.getInitcator());
+			result = StringUtils.contains(item.getNote(), ot.getInitcator());
 			if (result) {
 				break;
 			}
