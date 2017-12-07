@@ -116,9 +116,10 @@ public class ItemIndexerImpl implements ItemIndexer {
 	}
 
 	private void logItems(final List<ItemIndex> items) {
+		LOG.info("pushing {} items", items.size());
 
 		for (final ItemIndex item : items) {
-			LOG.debug("{}", new ItemLogWrapper(item)); 
+			LOG.debug("{}", new ItemLogWrapper(item));
 		}
 	}
 

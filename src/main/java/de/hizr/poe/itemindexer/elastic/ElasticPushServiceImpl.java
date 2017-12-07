@@ -42,13 +42,17 @@ public class ElasticPushServiceImpl implements ElasticPushService {
 
 	@Override
 	public void pushItems(final List<ItemIndex> itemIndexes) {
-		client = createClient();
+		if (itemIndexes.size() > 0) {
+			client = createClient();
 
-		final BulkRequest bulkRequest = createBulkRequest(itemIndexes);
+			final BulkRequest bulkRequest = createBulkRequest(itemIndexes);
 
-		performPush(bulkRequest);
+			performPush(bulkRequest);
 
-		close();
+			close();
+		} else {
+			LOG.info("skip bulk");
+		}
 	}
 
 	// ... utility methods
